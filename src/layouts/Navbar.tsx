@@ -12,8 +12,15 @@ import {
 import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/technet-logo.png';
+import { useAppSelector } from '@/redux/hooks/hooks';
 
 export default function Navbar() {
+  const { email } = useAppSelector((state) => state.user.user);
+
+  const handleLogout = () => {
+    console.log('Log out');
+  };
+
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
@@ -60,12 +67,27 @@ export default function Navbar() {
                     <DropdownMenuItem className="cursor-pointer">
                       Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Billing
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Team
-                    </DropdownMenuItem>
+                    {!email ? (
+                      <>
+                        <Link to="/signup">
+                          <DropdownMenuItem className="cursor-pointer">
+                            Sign Up
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/signin">
+                          <DropdownMenuItem className="cursor-pointer">
+                            Sign In
+                          </DropdownMenuItem>
+                        </Link>
+                      </>
+                    ) : (
+                      <DropdownMenuItem
+                        onClick={handleLogout}
+                        className="cursor-pointer"
+                      >
+                        Log Out
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem className="cursor-pointer">
                       Subscription
                     </DropdownMenuItem>
