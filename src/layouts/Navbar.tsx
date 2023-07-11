@@ -12,13 +12,20 @@ import {
 import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/technet-logo.png';
-import { useAppSelector } from '@/redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { setUser } from '@/redux/features/user/userSlice';
 
 export default function Navbar() {
   const { email } = useAppSelector((state) => state.user.user);
 
+  const dispatch = useAppDispatch();
+
   const handleLogout = () => {
-    console.log('Log out');
+    signOut(auth).then(() => {
+      dispatch(setUser(null));
+    });
   };
 
   return (
@@ -74,7 +81,7 @@ export default function Navbar() {
                             Sign Up
                           </DropdownMenuItem>
                         </Link>
-                        <Link to="/signin">
+                        <Link to="/login">
                           <DropdownMenuItem className="cursor-pointer">
                             Sign In
                           </DropdownMenuItem>
